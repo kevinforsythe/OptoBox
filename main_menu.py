@@ -4,6 +4,7 @@ def main_menu():
   print("\n\t\t\tMAIN MENU OPTIONS:")
   print("\n\t1. Upload a Previously Written Song to OptoBox")
   print("\n\t2. Create a New Song from a *.csv File and Upload to OptoBox")
+  print("\t   (currently works only for single column/channel LED control)")
   print("\n\t3. See a List of Previously Written Songs")
   print("\n\t4. See a Log of Songs Previously Uploaded to OptoBox")
   print("\n\t5. Quit")
