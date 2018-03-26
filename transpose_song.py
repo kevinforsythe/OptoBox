@@ -35,9 +35,12 @@ def transpose_song():
         if song_csv_data[i] == '0\n':
             handle_csv2txt.write('digitalWrite(LEDBlue, LOW);\n')
             handle_csv2txt.write('delay(' + beat_value + ');\n')
-        if song_csv_data[i] == '1\n':
+        elif song_csv_data[i] == '1\n':
             handle_csv2txt.write('digitalWrite(LEDBlue, HIGH);\n')
             handle_csv2txt.write('delay(' + beat_value + ');\n')
+        else:
+            print("ERROR:  You're CSV data is dirty (i.e. contains data other than '1' or '0')")
+            quit()
     handle_csv2txt.close()
     handle_csv_file.close()
     # now take hidden intermediate txt file and add template text to make ino file
@@ -55,5 +58,10 @@ def transpose_song():
     song_end.close()
     song_complete.close()
     print("\n"+path_new_song_dir+"/"+(new_song_name)+".ino is ready to be compiled & uploaded.")
+
+
+    # proceed2upload = input('\n\t--Would you like to upload this song to OptoBox now? (y/n)\n>')
+    # if proceed2upload == 'y':
+
 
 transpose_song()
