@@ -6,11 +6,10 @@ def main_menu():
   print("\n\t2. Create a New Song from a *.csv File and Upload to OptoBox")
   print("\t   (currently works only for single column/channel LED control)")
   print("\n\t3. See a List of Previously Written Songs")
+  print("\t    (Press 'q' to return to the main menu)")
   print("\n\t4. See a Log of Songs Previously Uploaded to OptoBox")
   print("\n\t5. Quit")
-
   main_menu_choice = input("\n\nWhat would you like to do?\n>")
-
   if main_menu_choice == '1':
       main_menu_1()
   elif main_menu_choice == '2':
@@ -26,18 +25,26 @@ def main_menu():
       print("\n\n\n\n\nPlease Choose a Valid Option:\n")
       main_menu()
 
+
 def main_menu_1():
-    print("option1 not yet implemented")
-    quit()
+    os.system('clear')
+    print("\nsorry, option1 not yet implemented\n\n")
+    main_menu()
+
 def main_menu_2():
-    print("option2 not yet implemented")
-    quit()
+    os.system('python3 transpose_song.py')
+    # call compile&upload function here
+    main_menu()
+
 def main_menu_3():
-    print("option3 not yet implemented")
-    quit()
+    os.system("ls -lu --time-style=long-iso ./output_songs | awk '{print $6, $7, $8, $9}' | less")
+    os.system('clear')
+    main_menu()
+
 def main_menu_4():
-    print("option4 not yet implemented")
-    quit()
+    os.system('clear')
+    print("sorry, option4 not yet implemented")
+    main_menu()
 
 
 

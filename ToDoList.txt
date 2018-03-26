@@ -1,9 +1,11 @@
 ToDoList:
--fix path names to template intro & coda .txt…
--recode menu for pre-loaded songs and transpose .csv data options
+
 -code the pre-loaded songs
+
 -code Composer's micro-controller song uploading function
--code Composer's .csv-to-.ino transposing function
+  -stuff makefile in song directory
+  -output command line stuff to flash arduino
+  
 -document stuff
   -welcome splash w/instructions
   -comments in Composer

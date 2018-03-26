@@ -7,6 +7,7 @@ def transpose_song():
     # uploading it to the microcontroller.  the song parameters are based on
     # *.csv files which should be placed in the "input_csv_song_files" folder
     # the user needs to provide a song name which is new and unique
+    os.system('clear')
     new_song_name = input('Please choose a name for your new song:\n>')
     path_new_song_dir = "./output_songs/"+(new_song_name)
     while os.path.isdir(path_new_song_dir) == True:
@@ -24,10 +25,9 @@ def transpose_song():
         print("OptoBoxComposer cannot find that file.  Please make sure the file is in the 'input_csv_song_files' folder and re-type the filename carefully.")
         path_csv_file = "./input_csv_song_files/"+(input('What is the filename of your *.csv file? (include the ".csv" suffix)\n>'))
         print("looking for:"+path_csv_file)
-    print("...found it!")
+    print("\n\ttransposing csv data in output song format...\n")
     # this makes a hidden txt file which holds the converted csv data
     path_temp_song_data = path_new_song_dir+"/."+(new_song_name)+".txt"
-    print(path_temp_song_data)
     handle_csv_file = open(path_csv_file, 'r')
     handle_csv2txt = open(path_temp_song_data, 'w')
     song_csv_data = handle_csv_file.readlines()  # this makes a list
@@ -41,9 +41,9 @@ def transpose_song():
     handle_csv2txt.close()
     handle_csv_file.close()
     # now take hidden intermediate txt file and add template text to make ino file
-    song_beginning = open('./.template_song_files/template_song_intro.txt', 'r')
+    song_beginning = open('./.template_files/template_song_intro.txt', 'r')
     handle_csv2txt = open(path_temp_song_data, 'r')
-    song_end = open('./.template_song_files/template_song_coda.txt', 'r')
+    song_end = open('./.template_files/template_song_coda.txt', 'r')
     song_complete = open(path_new_song_dir+"/"+(new_song_name)+".ino", 'w')
     a = song_beginning.read()
     b = handle_csv2txt.read()
@@ -54,5 +54,6 @@ def transpose_song():
     handle_csv2txt.close()
     song_end.close()
     song_complete.close()
+    print("\n"+path_new_song_dir+"/"+(new_song_name)+".ino is ready to be compiled & uploaded.")
 
-transpose_song()reate_new_song
+transpose_song()
