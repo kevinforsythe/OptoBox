@@ -19,6 +19,21 @@ const int LEDBlue = 10;
 
 int buttonStartState = 1;
 
+
+//  manual override switch interrupt:
+//  if the manual override switch has been engaged, then all three LED
+//  indicators (yellow+green+red) will be lit and latched in the ON position
+//  and the song will be stuck in an infinite loop (you'll need to reset the box
+//  if you want to run the loaded song from the beginning)
+void manualoverride() {
+  while (1) {
+      digitalWrite(LEDYellow, HIGH);
+      digitalWrite(LEDGreen, HIGH);
+      digitalWrite(LEDRed, HIGH);
+  }
+}
+
+
 void setup() {
 
   digitalWrite(switchManualOverride, LOW);
