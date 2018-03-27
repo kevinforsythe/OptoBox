@@ -1,12 +1,30 @@
 ToDoList:
 
+---------
+SOFTWARE:
+---------
 -code the pre-loaded songs
 
--code Composer's micro-controller song uploading function
-  -stuff makefile in song directory
-  -output command line stuff to flash arduino
-  
 -document stuff
   -welcome splash w/instructions
   -comments in Composer
   -README
+
+
+----------
+HARDWARE:
+----------
+-BigRed
+  -install Linux (which distro???)
+  -? stencil/decorate?
+  -add:
+    -git
+    -arduino
+    -arduino-mk
+    -
+-OptoBox
+  -drill & tap screw holes
+  -affix power switch (hot glue?)
+  -assemble sandwich plates with magnets
+  -make extra cable(s)
+  - ?? add tuning trimpot ??
