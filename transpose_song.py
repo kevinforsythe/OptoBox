@@ -57,11 +57,34 @@ def transpose_song():
     handle_csv2txt.close()
     song_end.close()
     song_complete.close()
-    print("\n"+path_new_song_dir+"/"+(new_song_name)+".ino is ready to be compiled & uploaded.")
+    print("\n\t"+path_new_song_dir+"/"+(new_song_name)+".ino is ready to be compiled & uploaded.")
 
+    # give user option to go back to main menu or proceed with upload
+    proceed2upload = None
+    while (proceed2upload != "y"):
+        print('\n--Would you like to upload this song to OptoBox now? (y/n)')
+        print("(enter 'y' to start uploading, or 'n' to go back to main menu)\n")
+        proceed2upload = input('>')
+        if proceed2upload == "n":
+            main_menu()
+    else:
+        # remind user to have micrrocontroller plugged into laptop
+        print("\n\nPlease make sure the Optobox is connected to the laptop via USB cable,")
+        print(" then press the 'enter' key to continue.")
+        foo = input('>')
 
-    # proceed2upload = input('\n\t--Would you like to upload this song to OptoBox now? (y/n)\n>')
-    # if proceed2upload == 'y':
-
+    # now copy the Makefile into the new song dir from template Makefile
+    path_song_Makefile = path_new_song_dir+"/Makefile"
+    handle_template_Makefile = open('./.template_files/template_Makefile', 'r')
+    handle_song_Makefile = open(path_song_Makefile, 'w')
+    transcribed_makefile = handle_template_Makefile.readlines()
+    for i in range(len(transcribed_makefile)):
+        handle_song_Makefile.write(transcribed_makefile[i])
+    handle_template_Makefile.close()
+    handle_song_Makefile.close()
+    # next issue the make & upload commands
+    make_command= "cd "+path_new_song_dir+"; make upload"
+    os.system(make_command)
+    os.system('clear')
 
 transpose_song()
