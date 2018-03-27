@@ -25,7 +25,7 @@ def transpose_song():
         print("OptoBoxComposer cannot find that file.  Please make sure the file is in the 'input_csv_song_files' folder and re-type the filename carefully.")
         path_csv_file = "./input_csv_song_files/"+(input('What is the filename of your *.csv file? (include the ".csv" suffix)\n>'))
         print("looking for:"+path_csv_file)
-    print("\n\ttransposing csv data in output song format...\n")
+    print("\ttransposing csv data in output song format...\n")
     # this makes a hidden txt file which holds the converted csv data
     path_temp_song_data = path_new_song_dir+"/."+(new_song_name)+".txt"
     handle_csv_file = open(path_csv_file, 'r')
@@ -57,7 +57,19 @@ def transpose_song():
     handle_csv2txt.close()
     song_end.close()
     song_complete.close()
-    print("\n\t"+path_new_song_dir+"/"+(new_song_name)+".ino is ready to be compiled & uploaded.")
+
+    # now copy the Makefile into the new song dir from template Makefile
+    path_song_Makefile = path_new_song_dir+"/Makefile"
+    handle_template_Makefile = open('./.template_files/template_Makefile', 'r')
+    handle_song_Makefile = open(path_song_Makefile, 'w')
+    transcribed_makefile = handle_template_Makefile.readlines()
+    for i in range(len(transcribed_makefile)):
+        handle_song_Makefile.write(transcribed_makefile[i])
+    handle_template_Makefile.close()
+    handle_song_Makefile.close()
+
+
+    print("\n\t"+new_song_name+".ino is ready to be compiled & uploaded.")
 
     # give user option to go back to main menu or proceed with upload
     proceed2upload = None
@@ -73,18 +85,10 @@ def transpose_song():
         print(" then press the 'enter' key to continue.")
         foo = input('>')
 
-    # now copy the Makefile into the new song dir from template Makefile
-    path_song_Makefile = path_new_song_dir+"/Makefile"
-    handle_template_Makefile = open('./.template_files/template_Makefile', 'r')
-    handle_song_Makefile = open(path_song_Makefile, 'w')
-    transcribed_makefile = handle_template_Makefile.readlines()
-    for i in range(len(transcribed_makefile)):
-        handle_song_Makefile.write(transcribed_makefile[i])
-    handle_template_Makefile.close()
-    handle_song_Makefile.close()
     # next issue the make & upload commands
     make_command= "cd "+path_new_song_dir+"; make upload"
     os.system(make_command)
     os.system('clear')
+    print('--your song has been uploaded to OptoBox.')
 
 transpose_song()
