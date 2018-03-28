@@ -17,7 +17,7 @@ def upload_song():
 
     # check for a Makefile and create one if not present
     path_song_Makefile = path_old_song_dir+"/Makefile"
-    while os.path.isdir(path_song_Makefile) == False:
+    while os.path.isfile(path_song_Makefile) == False:
         handle_template_Makefile = open('./.template_files/template_Makefile', 'r')
         handle_song_Makefile = open(path_song_Makefile, 'w')
         transcribed_makefile = handle_template_Makefile.readlines()
@@ -44,6 +44,10 @@ def upload_song():
     handle_upload_log.close()
     handle_upload_log = open(path_upload_log, 'w')
     handle_upload_log.write(datetime_stamp+"\t "+old_song_name+"\n")
+    handle_upload_log.close()
+    handle_upload_log = open(path_upload_log, 'a')
+    for i in range(len(data_upload_log)):
+        handle_upload_log.write(data_upload_log[i])
     handle_upload_log.close()
 
     os.system('clear')
