@@ -1,4 +1,5 @@
 import os
+import datetime
 
 def transpose_song():
     # this function creates a directory (ie file folder) in the 'output_songs'
@@ -88,6 +89,26 @@ def transpose_song():
     # next issue the make & upload commands
     make_command= "cd "+path_new_song_dir+"; make upload"
     os.system(make_command)
+
+    # now add upload to the Log
+    datetime_stamp = datetime.datetime.now().strftime("%Y-%b-%d\t%H:%M:%S\t(%a)")
+    path_upload_log = "./output_songs/.upload_log.txt"
+    while os.path.exists(path_upload_log) == False:
+        handle_upload_log = open(path_upload_log, 'w+')
+        handle_upload_log.write("\tBegin Log")
+        handle_upload_log.close()
+        print("couldn't find the upload log file so created a new one...")
+    handle_upload_log = open(path_upload_log, 'r')
+    data_upload_log = handle_upload_log.readlines() # copy all previous log entries
+    handle_upload_log.close()
+    handle_upload_log = open(path_upload_log, 'w')
+    handle_upload_log.write(datetime_stamp+"\t "+new_song_name+"\n")
+    handle_upload_log.close()
+    handle_upload_log = open(path_upload_log, 'a')
+    for i in range(len(data_upload_log)):
+        handle_upload_log.write(data_upload_log[i])
+    handle_upload_log.close()
+
     os.system('clear')
     print('--your song has been uploaded to OptoBox.')
 
