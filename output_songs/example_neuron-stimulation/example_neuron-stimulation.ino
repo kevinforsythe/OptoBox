@@ -5,7 +5,7 @@
 // pin0 = wired to manual override switch, for interrupt signal (INT2), HIGH when manually overide is on (normally pulled LOW)
 // pin2 = LED Yellow, indicates program is ready to run
 // pin3 = LED Green, indicates program running
-// pin4 = LED Red, indicates program finished
+// pin4 = LED Red, indicates program finishedOpto-CRAC_3cyles
 // pin9 = BUTTON, starts the loaded program (normally held HIGH)
 // pin10 = gate for transistor driven LEDs
 //
@@ -55,7 +55,31 @@ void loop() {
   digitalWrite(LEDYellow, LOW); // turn off Yellow LED when program starts
 
   digitalWrite(LEDGreen, HIGH);  // turn on Green LED while programm running
+  // song intro template ends here, and
+  // example_neuron-stimulation song starts here:
 
-// song intro template ends here, and
-// Blue LED instructions start here:
+  // the 'on-off' motiff will run for 12 cycles
+  for (int i=0; i < 12; i++) {
+    // the 'on' phase will blink at 20Hz, period = 50msec (25msec on, 25msec off)
+    // and will be on for 30s, or 600 cycles (600*50msec=30,000msec)
+    for (int j=0; j < 600; j++) {
+      digitalWrite(LEDBlue, HIGH);
+      delay(25);
+      digitalWrite(LEDBlue, LOW);
+      delay(25);
+    }
+    // the 'off' phase will last 2 minutes, or 120,000msec
+    delay(120000);
+  }
+
+//  example_neuron-stimulation song ends here, and
+//  song coda starts here:
 //
+  digitalWrite(LEDBlue, LOW);   // turn off the Blue LEDs in case they were
+                                // on during the last beat of the song
+  digitalWrite(LEDGreen, LOW);   // turn off Green LED after program finishes
+  digitalWrite(LEDRed, HIGH);  // turn on Red LED after program finishes and
+                               // enter indefinite while loop doing nothing
+  while (1) {
+  }
+}

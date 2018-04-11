@@ -1,4 +1,4 @@
-//  transposed *.csv data ends here, and
+//  Blue LED instructions end here, and
 //  song coda starts here:
 //
   digitalWrite(LEDBlue, LOW);   // turn off the Blue LEDs in case they were

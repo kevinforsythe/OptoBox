@@ -57,5 +57,29 @@ void loop() {
   digitalWrite(LEDGreen, HIGH);  // turn on Green LED while programm running
 
 // song intro template ends here, and
-// Blue LED instructions start here:
+// Opto-CRAC song starts here:
 //
+digitalWrite(LEDBlue, HIGH);
+delay(30000);
+digitalWrite(LEDBlue, LOW);
+delay(120000);
+digitalWrite(LEDBlue, HIGH);
+delay(30000);
+digitalWrite(LEDBlue, LOW);
+delay(120000);
+digitalWrite(LEDBlue, HIGH);
+delay(30000);
+digitalWrite(LEDBlue, LOW);
+delay(120000);
+
+//  Opto-CRAC song ends here, and
+//  song coda starts here:
+//
+  digitalWrite(LEDBlue, LOW);   // turn off the Blue LEDs in case they were
+                                // on during the last beat of the song
+  digitalWrite(LEDGreen, LOW);   // turn off Green LED after program finishes
+  digitalWrite(LEDRed, HIGH);  // turn on Red LED after program finishes and
+                               // enter indefinite while loop doing nothing
+  while (1) {
+  }
+}

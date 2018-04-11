@@ -3,7 +3,7 @@ ToDoList:
 ---------
 SOFTWARE:
 ---------
--code the pre-loaded songs
+-code OptoboxComposer (PCR-machine-like user interface for writing new songs)
 
 -document stuff
   -welcome splash w/instructions
