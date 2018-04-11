@@ -15,7 +15,6 @@ SOFTWARE:
 HARDWARE:
 ----------
 -BigRed
-  -install Linux (which distro???)
   -? stencil/decorate?
   -add:
     -git

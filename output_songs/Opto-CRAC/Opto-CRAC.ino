@@ -19,6 +19,21 @@ const int LEDBlue = 10;
 
 int buttonStartState = 1;
 
+
+//  manual override switch interrupt:
+//  if the manual override switch has been engaged, then all three LED
+//  indicators (yellow+green+red) will be lit and latched in the ON position
+//  and the song will be stuck in an infinite loop (you'll need to reset the box
+//  if you want to run the loaded song from the beginning)
+void manualoverride() {
+  while (1) {
+      digitalWrite(LEDYellow, HIGH);
+      digitalWrite(LEDGreen, HIGH);
+      digitalWrite(LEDRed, HIGH);
+  }
+}
+
+
 void setup() {
 
   digitalWrite(switchManualOverride, LOW);
@@ -42,60 +57,29 @@ void loop() {
   digitalWrite(LEDGreen, HIGH);  // turn on Green LED while programm running
 
 // song intro template ends here, and
-// transposed *.csv song data starts here:
-// 
+// Opto-CRAC song starts here:
+//
 digitalWrite(LEDBlue, HIGH);
-delay(20);
+delay(30000);
+digitalWrite(LEDBlue, LOW);
+delay(120000);
 digitalWrite(LEDBlue, HIGH);
-delay(20);
+delay(30000);
 digitalWrite(LEDBlue, LOW);
-delay(20);
-digitalWrite(LEDBlue, LOW);
-delay(20);
+delay(120000);
 digitalWrite(LEDBlue, HIGH);
-delay(20);
-digitalWrite(LEDBlue, HIGH);
-delay(20);
+delay(30000);
 digitalWrite(LEDBlue, LOW);
-delay(20);
-digitalWrite(LEDBlue, LOW);
-delay(20);
-digitalWrite(LEDBlue, HIGH);
-delay(20);
-digitalWrite(LEDBlue, HIGH);
-delay(20);
-digitalWrite(LEDBlue, LOW);
-delay(20);
-digitalWrite(LEDBlue, LOW);
-delay(20);
-digitalWrite(LEDBlue, HIGH);
-delay(20);
-digitalWrite(LEDBlue, HIGH);
-delay(20);
-digitalWrite(LEDBlue, LOW);
-delay(20);
-digitalWrite(LEDBlue, LOW);
-delay(20);
-//  transposed *.csv data ends here, and
+delay(120000);
+
+//  Opto-CRAC song ends here, and
 //  song coda starts here:
 //
-
+  digitalWrite(LEDBlue, LOW);   // turn off the Blue LEDs in case they were
+                                // on during the last beat of the song
   digitalWrite(LEDGreen, LOW);   // turn off Green LED after program finishes
   digitalWrite(LEDRed, HIGH);  // turn on Red LED after program finishes and
                                // enter indefinite while loop doing nothing
   while (1) {
-  }
-}
-
-//  manual override switch interrupt:
-//  if the manual override switch has been engaged, then all three LED
-//  indicators (yellow+green+red) will be lit and latched in the ON position
-//  and the song will be stuck in an infinite loop (you'll need to reset the box
-//  if you want to run the loaded song from the beginning)
-void manualoverride() {
-  while (1) {
-      digitalWrite(LEDYellow, HIGH);
-      digitalWrite(LEDGreen, HIGH);
-      digitalWrite(LEDRed, HIGH);
   }
 }
