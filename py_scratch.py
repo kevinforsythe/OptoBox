@@ -13,7 +13,7 @@ def compose_song():
     # gets compiled into machine code and uploaded to the microcontroller
 
     os.system('clear')
-    new_song_name = input('Please choose a name for your new song:\n>')
+    new_song_name = input('\nPlease choose a name for your new song:\n>')
     path_new_song_dir = "~/Documents/Optobox_Files/Optobox_Songs/"+(new_song_name)
     while os.path.isdir(path_new_song_dir) == True:
         print("Sorry, a song folder with this name already exists.")
@@ -21,57 +21,129 @@ def compose_song():
         path_new_song_dir = "~/Documents/Optobox_Files/Optobox_Songs"+(new_song_name)
     os.makedirs(path_new_song_dir)
 
-    print("What blinking frequency (in Hz) would you like to use when the LEDs are active?\n")
-    print('NB: if you want the LEDs to be constantly on (ie, no blinking) when active, enter "0"\n')
-    int blink_frequency= input("please enter a number:")
-
-    if blink_frequency != 0:
-        print("\nyour blinking frequency is: "+blink_frequency+"Hz\n")
-        float blink_period = (1/blink_frequency)
-        float blink_on_seconds = (blink_period/2)
-        float blink_on_msec = (blink_on_seconds*1000)
-        print("so your cycle period time is "+blink_period+" seconds.")
-        print("For every cycle, the LEDs will be active for "+blink_on_msec+"msec, then off for "+blink_on_msec"msec\n")
+        # input PWM settings for when LED is on
+    print("\nWhen your LEDs are active, do you want to modulate their power with Pulse Width Modification (PWM)?")
+    print("(ie, do you want to attenuate LED output by decreasing LED duty cycle when it's on?)")
+    PWM_option = input("y/n)\n>")
+    if PWM_option == 'y':
+        PWM_option = 1
+    elif PWM_option == 'n':
+        PWM_option = 0
     else:
-        print("The LEDs will not blink when activated (ie, they will be constantly on)")
-        int blink_period = 0
-        flash_on_msec
-    #
-    # path_csv_file = "./input_csv_song_files/"+(input('What is the filename of your *.csv file? (include the ".csv" suffix)\n>'))
-    # print("looking for:"+path_csv_file)
-    # while os.path.exists(path_csv_file) == False:
-    #     print("OptoBoxComposer cannot find that file.  Please make sure the file is in the 'input_csv_song_files' folder and re-type the filename carefully.")
-    #     path_csv_file = "./input_csv_song_files/"+(input('What is the filename of your *.csv file? (include the ".csv" suffix)\n>'))
-    #     print("looking for:"+path_csv_file)
-    # print("\ttransposing csv data in output song format...\n")
-    # # this makes a hidden txt file which holds the converted csv data
-    # path_temp_song_data = path_new_song_dir+"/."+(new_song_name)+".txt"
-    # handle_csv_file = open(path_csv_file, 'r')
-    # handle_csv2txt = open(path_temp_song_data, 'w')
-    # song_csv_data = handle_csv_file.readlines()  # this makes a list
-    # for i in range(len(song_csv_data)):
-    #     if song_csv_data[i] == '0\n':
-    #         handle_csv2txt.write('digitalWrite(LEDBlue, LOW);\n')
-    #         handle_csv2txt.write('delay(' + beat_value + ');\n')
-    #     elif song_csv_data[i] == '1\n':
-    #         handle_csv2txt.write('digitalWrite(LEDBlue, HIGH);\n')
-    #         handle_csv2txt.write('delay(' + beat_value + ');\n')
-    #     else:
-    #         print("ERROR:  You're CSV data is dirty (i.e. contains data other than '1' or '0')")
-    #         quit()
-    # handle_csv2txt.close()
-    # handle_csv_file.close()
-    # # now take hidden intermediate txt file and add template text to make ino file
-    # song_beginning = open('./.template_files/template_song_intro.txt', 'r')
-    # handle_csv2txt = open(path_temp_song_data, 'r')
-    # song_end = open('./.template_files/template_song_coda.txt', 'r')
-    # song_complete = open(path_new_song_dir+"/"+(new_song_name)+".ino", 'w')
-    # a = song_beginning.read()
-    # b = handle_csv2txt.read()
-    # c = song_end.read()
-    # song_complete.write(a + b + c)
-    # # now close all the files
-    # song_beginning.close()
-    # handle_csv2txt.close()
-    # song_end.close()
-    # song_complete.close()
+        PWM_option = 999
+    while (PWM_option != 1 & PWM_option != 0):
+        print("Do you want to decrease LED power using PWM? \n(please just type 'y' for yes, or 'n' for no, then hit 'enter')")
+        PWM_option = input("y/n)\n>")
+        if PWM_option == 'y':
+            PWM_option = 1
+        elif PWM_option == 'n':
+            PWM_option = 0
+        else:
+            PWM_option = 999
+    if PWM_option == 1:
+        LED_duty_cycle = int(input("\n\tplease enter the desired percent duty cycle (1-100):"))
+    # trying to restrict input to valid response...
+    #    is_LED_duty_cycle_int = isinstance(LED_duty_cycle, int)
+        while (LED_duty_cycle > 101) | (LED_duty_cycle < 0):
+            LED_duty_cycle = int(input("\n\tplease enter the desired percent duty cycle (1-100):"))
+        print("OK, LED duty cycle will be %d%%" % (LED_duty_cycle))
+    elif PWM_option == 0:
+        LED_duty_cycle = 100
+        print("OK, LED duty cycle will be %d%%" % (LED_duty_cycle))
+    else:
+        print("error!")
+        quit
+
+        # input on-off blinking rate
+    print("\nWhen your LEDs are active, what pulse-rate (ie blinking frequency) would you like to use? (in Hz)")
+    print('NB: if you want the LEDs to be constantly on when active (ie, no blinking), enter "0"\n')
+    blink_frequency = int(input("please enter a number:"))
+    if blink_frequency != 0:
+        print("\nyour pulse-rate is: %dHz\n" % (blink_frequency))
+        blink_period = float(1/blink_frequency)
+        blink_on_seconds = float(blink_period/2)
+        blink_on_msec = int(blink_on_seconds*1000)
+        blink_off_msec = blink_on_msec
+        print("so your blinking period time is %5.3f seconds." % (blink_period))
+        print("For every blink-cycle, the LEDs will be on for %dmsec, then off for %dmsec" % (blink_on_msec, blink_off_msec))
+        print("The LEDs will continuously blink at this rate throughout the 'LED Active' period of the 'LED Active/Resting cycle'.")
+    else:
+        print("The LEDs will not blink when activated (ie, they will be constantly on throughout your 'LED-Active' period)\n")
+        blink_period = 0
+
+        #input LED Active/Resting times and total number of cycle repeats
+    print("\nPlease provide parameters for the 'LED Active/Resting cycle':")
+    LED_active_time = float(input("\tfor each 'LED Active/Resting cycle', how long should the LEDs be 'Active' (in seconds)?")
+    LED_rest_time = float(input("\tbetween each 'Active' period, how long should the LEDs be 'Resting' (ie turned off, in seconds)?"))
+    print("OK, for every 'LED Active/Resting cycle', the LEDs will be active for %d seconds, then rest for %d seconds," % (LED_active_time, LED_rest_time))
+    sum_LED_active_resting_times = LED_active_time + LED_rest_time
+    print("so each 'LED Active/Resting cycle' will last %d seconds." % (sum_LED_active_resting_times))
+    print("\nHow many times would you like to repeat the 'LED Active/Resting cycle'?")
+    num_LED_pattern_repeats = int(input("please enter a number:"))
+    print("OK, your LEDs will repeat the 'Active/Resting' cycle a %d times." % (num_LED_pattern_repeats))
+    print("so your total song time will be %d seconds." % (sum_LED_active_resting_times))
+
+    num_blinks_per_active_phase = LED_active_time/blink_period
+
+
+    # recall, path_new_song_dir = "~/Documents/Optobox_Files/Optobox_Songs/"+(new_song_name)
+    # this makes a hidden txt file which holds the song parameters
+    path_temp_song_parameters = path_new_song_dir+"/."+(new_song_name)+".txt"
+    handle_song_parameters_txt = open(path_temp_song_parameters, 'w')
+
+    # Set the number of 'LED Active/Resting' cycle repeats
+    handle_song_parameters_txt.write('for (int i = 0; i < '+ num_LED_pattern_repeats + '; i++) {\n')
+
+    # LEDs Active Period
+
+# ? should i write 2 different sections, 1 for blinking, 1 for 100% duty cycle?
+
+    handle_song_parameters_txt.write('    for (j = 0; j < '+ num_blinks_per_active_phase + '; j++) {\n')
+    handle_song_parameters_txt.write('        digitalWrite(LEDBlue, HIGH);\n')
+    handle_song_parameters_txt.write('        delay(' + blink_on_msec + ');\n')
+    handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
+    handle_song_parameters_txt.write('        delay(' + blink_off_msec + ');\n')
+
+    # close the for loop for LED Active phase blinking
+    handle_song_parameters_txt.write('    }')
+
+    #LEDs Resting
+
+    # close the for loop for Active/Resting cycle repeats
+    handle_song_parameters_txt.write('}')
+
+
+
+
+        handle_song_parameters_txt.write('digitalWrite(LEDBlue, LOW);\n')
+        handle_song_parameters_txt.write('delay(' + beat_value + ');\n')
+
+
+
+        elif song_csv_data[i] == '1\n':
+            handle_song_parameters_txt.write('digitalWrite(LEDBlue, HIGH);\n')
+            handle_song_parameters_txt.write('delay(' + beat_value + ');\n')
+        else:
+            print("ERROR:  You're CSV data is dirty (i.e. contains data other than '1' or '0')")
+            quit()
+    handle_song_parameters_txt.close()
+
+    # now take hidden intermediate txt file and add template text to make ino file
+    song_beginning = open('./.template_files/template_song_intro.txt', 'r')
+    handle_song_parameters_txt = open(path_temp_song_parameters, 'r')
+    song_end = open('./.template_files/template_song_coda.txt', 'r')
+    song_complete = open(path_new_song_dir+"/"+(new_song_name)+".ino", 'w')
+    a = song_beginning.read()
+    b = handle_song_parameters_txt.read()
+    c = song_end.read()
+    song_complete.write(a + b + c)
+    # now close all the files
+    song_beginning.close()
+    handle_song_parameters_txt.close()
+    song_end.close()
+    song_complete.close()
+
+
+
+
+compose_song()
