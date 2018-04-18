@@ -103,78 +103,48 @@ def compose_song():
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, HIGH);\n')
             handle_song_parameters_txt.write('        delay(' + LED_active_time + ');\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
-            handle_song_parameters_txt.write('        delay(' + LED_rest_time+ ');\n')
+            handle_song_parameters_txt.write('        delay(' + LED_rest_time + ');\n')
             handle_song_parameters_txt.write('}')
 
         if blink frequency != 0:
             handle_song_parameters_txt.write('for (int i = 0; i < '+ num_LED_pattern_repeats + '; i++) {/\n')
             handle_song_parameters_txt.write('    for (j = 0; j < '+ num_blinks_per_active_phase + '; j++) {\n')
+            handle_song_parameters_txt.write('        digitalWrite(LEDBlue, HIGH);\n')
+            handle_song_parameters_txt.write('        delay(' + blink_on_msec + ');\n')
+            handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
+            handle_song_parameters_txt.write('        delay(' + blink_off_msec + ');\n')
             handle_song_parameters_txt.write('    }')
+            handle_song_parameters_txt.write('    dealy(' + LED_rest_time + ');\n')
             handle_song_parameters_txt.write('}')
-
-
         else:
             print("error!")
             quit
     if PWM_option == 1:
         if blink_frequency == 0:
-            asdf
+            pass
         if blink frequency != 0:
-            asdf
+            pass
         else:
             print("error!")
             quit
 
 
+    handle_song_parameters_txt.close()
 
-
-
-
-
-    handle_song_parameters_txt.write('    for (j = 0; j < '+ num_blinks_per_active_phase + '; j++) {\n')
-    handle_song_parameters_txt.write('        digitalWrite(LEDBlue, HIGH);\n')
-    handle_song_parameters_txt.write('        delay(' + blink_on_msec + ');\n')
-    handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
-    handle_song_parameters_txt.write('        delay(' + blink_off_msec + ');\n')
-
-    # close the for loop for LED Active phase blinking
-    handle_song_parameters_txt.write('    }')
-
-    #LEDs Resting
-
-    # close the for loop for Active/Resting cycle repeats
-    handle_song_parameters_txt.write('}')
-
-#
-#
-#
-#         handle_song_parameters_txt.write('digitalWrite(LEDBlue, LOW);\n')
-#         handle_song_parameters_txt.write('delay(' + beat_value + ');\n')
-#
-#
-#
-#         elif song_csv_data[i] == '1\n':
-#             handle_song_parameters_txt.write('digitalWrite(LEDBlue, HIGH);\n')
-#             handle_song_parameters_txt.write('delay(' + beat_value + ');\n')
-#         else:
-#             print("ERROR:  You're CSV data is dirty (i.e. contains data other than '1' or '0')")
-#             quit()
-#     handle_song_parameters_txt.close()
-#
-#     # now take hidden intermediate txt file and add template text to make ino file
-#     song_beginning = open('./.template_files/template_song_intro.txt', 'r')
-#     handle_song_parameters_txt = open(path_temp_song_parameters, 'r')
-#     song_end = open('./.template_files/template_song_coda.txt', 'r')
-#     song_complete = open(path_new_song_dir+"/"+(new_song_name)+".ino", 'w')
-#     a = song_beginning.read()
-#     b = handle_song_parameters_txt.read()
-#     c = song_end.read()
-#     song_complete.write(a + b + c)
-#     # now close all the files
-#     song_beginning.close()
-#     handle_song_parameters_txt.close()
-#     song_end.close()
-#     song_complete.close()
+    # now take hidden intermediate txt file and add template text to make ino file
+    song_beginning = open('./.template_files/template_song_intro.txt', 'r')
+    handle_song_parameters_txt = open(path_temp_song_parameters, 'r')
+    song_end = open('./.template_files/template_song_coda.txt', 'r')
+    song_complete = open(path_new_song_dir+"/"+(new_song_name)+".ino", 'w')
+    a = song_beginning.read()
+    b = handle_song_parameters_txt.read()
+    c = song_end.read()
+    song_complete.write(a + b + c)
+    # now close all the files
+    song_beginning.close()
+    handle_song_parameters_txt.close()
+    song_end.close()
+    song_complete.close()
 
 
 
