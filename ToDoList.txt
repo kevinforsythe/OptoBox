@@ -5,6 +5,8 @@ SOFTWARE:
 ---------
 -code OptoboxComposer (PCR-machine-like user interface for writing new songs)
 
+-protect files with chmod so users don't corrupt files?
+
 -document stuff
   -welcome splash w/instructions
   -comments in Composer
