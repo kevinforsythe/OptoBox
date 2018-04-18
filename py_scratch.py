@@ -14,11 +14,11 @@ def compose_song():
 
     os.system('clear')
     new_song_name = input('\nPlease choose a name for your new song:\n>')
-    path_new_song_dir = "~/Documents/Optobox_Files/Optobox_Songs/"+(new_song_name)
+    path_new_song_dir = "../Documents/Optobox_Files/Optobox_Songs/"+(new_song_name)
     while os.path.isdir(path_new_song_dir) == True:
         print("Sorry, a song folder with this name already exists.")
         new_song_name = input('Please choose a unique name for your new song:\n>')
-        path_new_song_dir = "~/Documents/Optobox_Files/Optobox_Songs"+(new_song_name)
+        path_new_song_dir = "../Documents/Optobox_Files/Optobox_Songs"+(new_song_name)
     os.makedirs(path_new_song_dir)
 
         # input PWM settings for when LED is on
@@ -86,7 +86,8 @@ def compose_song():
     print("OK, your LEDs will repeat the 'Active/Resting' cycle %d times," % (num_LED_pattern_repeats))
     print("so your song's total time length will be   %d seconds." % (num_LED_pattern_repeats*sum_LED_active_and_rest_time))
 
-    num_blinks_per_active_phase = int(LED_active_time/blink_period)
+    if blink_period != 0:
+        num_blinks_per_active_phase = int(LED_active_time/blink_period)
 
 
     # recall, path_new_song_dir = "~/Documents/Optobox_Files/Optobox_Songs/"+(new_song_name)
@@ -99,34 +100,30 @@ def compose_song():
     if PWM_option == 0:
         if blink_frequency == 0:
             # Set the number of 'LED Active/Resting' cycle repeats
-            handle_song_parameters_txt.write('for (int i = 0; i < '+ num_LED_pattern_repeats + '; i++) {/\n')
+            handle_song_parameters_txt.write('for (int i = 0; i < '+ str(num_LED_pattern_repeats) + '; i++) {/\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, HIGH);\n')
-            handle_song_parameters_txt.write('        delay(' + LED_active_time + ');\n')
+            handle_song_parameters_txt.write('        delay(' + str(LED_active_time) + ');\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
-            handle_song_parameters_txt.write('        delay(' + LED_rest_time + ');\n')
+            handle_song_parameters_txt.write('        delay(' + str(LED_rest_time) + ');\n')
             handle_song_parameters_txt.write('}')
 
-        if blink frequency != 0:
-            handle_song_parameters_txt.write('for (int i = 0; i < '+ num_LED_pattern_repeats + '; i++) {/\n')
-            handle_song_parameters_txt.write('    for (j = 0; j < '+ num_blinks_per_active_phase + '; j++) {\n')
+        if blink_frequency != 0:
+            handle_song_parameters_txt.write('for (int i = 0; i < '+ str(num_LED_pattern_repeats) + '; i++) {\n')
+            handle_song_parameters_txt.write('    for (j = 0; j < '+ str(num_blinks_per_active_phase) + '; j++) {\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, HIGH);\n')
-            handle_song_parameters_txt.write('        delay(' + blink_on_msec + ');\n')
+            handle_song_parameters_txt.write('        delay(' + str(blink_on_msec) + ');\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
-            handle_song_parameters_txt.write('        delay(' + blink_off_msec + ');\n')
+            handle_song_parameters_txt.write('        delay(' + str(blink_off_msec) + ');\n')
             handle_song_parameters_txt.write('    }')
-            handle_song_parameters_txt.write('    dealy(' + LED_rest_time + ');\n')
+            handle_song_parameters_txt.write('    delay(' + str(LED_rest_time) + ');\n')
             handle_song_parameters_txt.write('}')
-        else:
-            print("error!")
-            quit
+
     if PWM_option == 1:
         if blink_frequency == 0:
             pass
-        if blink frequency != 0:
+        if blink_frequency != 0:
             pass
-        else:
-            print("error!")
-            quit
+
 
 
     handle_song_parameters_txt.close()
