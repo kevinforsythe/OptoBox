@@ -96,6 +96,7 @@ def compose_song():
         while (LED_duty_cycle > 101) | (LED_duty_cycle < 0):
             LED_duty_cycle = int(input("\n\tplease enter the desired percent duty cycle (1-100):"))
         print("OK, LED duty cycle will be %d%%" % (LED_duty_cycle))
+        LED_PWM_value = int(LED_duty_cycle*2.55)
     elif PWM_option == 0:
         LED_duty_cycle = 100
         print("OK, LED duty cycle will be %d%%" % (LED_duty_cycle))
@@ -171,7 +172,13 @@ def compose_song():
 
     if PWM_option == 1:
         if blink_frequency == 0:
-            pass
+            # Set the number of 'LED Active/Resting' cycle repeats
+            handle_song_parameters_txt.write('for (int i = 0; i < '+ str(num_LED_pattern_repeats) + '; i++) {\n')
+            handle_song_parameters_txt.write('        analogWrite(LEDBlue, ' + str(LED_PWM_value) + ');\n')
+            handle_song_parameters_txt.write('        delay(' + str(LED_active_time_msec) + ');\n')
+            handle_song_parameters_txt.write('        analogWrite(LEDBlue, 0);\n')
+            handle_song_parameters_txt.write('        delay(' + str(LED_rest_time_msec) + ');\n')
+            handle_song_parameters_txt.write('}')
         if blink_frequency != 0:
             pass
 
