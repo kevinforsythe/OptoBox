@@ -110,6 +110,7 @@ def compose_song():
     if blink_frequency != 0:
         print("\nyour pulse-rate is: %dHz\n" % (blink_frequency))
         blink_period = float(1/blink_frequency)
+        blink_period_msec = int(blink_period*1000)
         blink_on_seconds = float(blink_period/2)
         blink_on_msec = int(blink_on_seconds*1000)
         blink_off_msec = blink_on_msec
@@ -136,6 +137,8 @@ def compose_song():
 
     if blink_period != 0:
         num_blinks_per_active_phase = int(LED_active_time/blink_period)
+    LED_active_time_msec = int(LED_active_time*1000)
+    LED_rest_time_msec = int(LED_rest_time*1000)
 
 
     # recall, path_new_song_dir = "~/Documents/Optobox_Files/Optobox_Songs/"+(new_song_name)
@@ -150,9 +153,9 @@ def compose_song():
             # Set the number of 'LED Active/Resting' cycle repeats
             handle_song_parameters_txt.write('for (int i = 0; i < '+ str(num_LED_pattern_repeats) + '; i++) {\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, HIGH);\n')
-            handle_song_parameters_txt.write('        delay(' + str(LED_active_time) + ');\n')
+            handle_song_parameters_txt.write('        delay(' + str(LED_active_time_msec) + ');\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
-            handle_song_parameters_txt.write('        delay(' + str(LED_rest_time) + ');\n')
+            handle_song_parameters_txt.write('        delay(' + str(LED_rest_time_msec) + ');\n')
             handle_song_parameters_txt.write('}')
 
         if blink_frequency != 0:
@@ -163,7 +166,7 @@ def compose_song():
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
             handle_song_parameters_txt.write('        delay(' + str(blink_off_msec) + ');\n')
             handle_song_parameters_txt.write('    }')
-            handle_song_parameters_txt.write('    delay(' + str(LED_rest_time) + ');\n')
+            handle_song_parameters_txt.write('    delay(' + str(LED_rest_time_msec) + ');\n')
             handle_song_parameters_txt.write('}')
 
     if PWM_option == 1:
