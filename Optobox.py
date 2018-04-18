@@ -5,7 +5,7 @@ import datetime
 
 def main_menu():
   print("\n\t\t\tMAIN MENU OPTIONS:")
-  print("\n\t1. Compose a Song File")
+  print("\n\t1. Compose a Song File (with option to Upload)")
   print("\n\t2. See the List of Song Files")
   print("\t    (NOTE: After viewing, press 'q' to return to the main menu)")
   print("\n\t3. Upload a Song to OptoBox")
@@ -190,6 +190,58 @@ def compose_song():
     handle_song_parameters_txt.close()
     song_end.close()
     song_complete.close()
+
+
+    # now copy the Makefile into the new song dir from template Makefile
+    path_song_Makefile = path_new_song_dir+"/Makefile"
+    handle_template_Makefile = open('./.template_files/template_Makefile', 'r')
+    handle_song_Makefile = open(path_song_Makefile, 'w')
+    transcribed_makefile = handle_template_Makefile.readlines()
+    for i in range(len(transcribed_makefile)):
+        handle_song_Makefile.write(transcribed_makefile[i])
+    handle_template_Makefile.close()
+    handle_song_Makefile.close()
+
+    print("\n\t"+new_song_name+".ino is ready to be compiled & uploaded.")
+    # give user option to go back to main menu or proceed with upload
+    proceed2upload = None
+    while (proceed2upload != "y"):
+        print('\n--Would you like to upload this song to OptoBox now? (y/n)')
+        print("(enter 'y' to start uploading, or 'n' to go back to main menu)\n")
+        proceed2upload = input('>')
+        if proceed2upload == "n":
+            main_menu()
+
+    # remind user to have micrrocontroller plugged into laptop
+    print("\n\nPlease make sure the Optobox is connected to the laptop via USB cable,")
+    print(" then press the 'enter' key to continue.")
+    foo = input('>')
+
+    # next issue the make & upload commands
+    make_command= "cd "+path_new_song_dir+"; make upload"
+    os.system(make_command)
+
+    # now add upload to the Log
+    datetime_stamp = datetime.datetime.now().strftime("%Y-%b-%d\t%H:%M:%S\t(%a)")
+    path_upload_log = "../Documents/Optobox_Files/Optobox_Logs/.upload_log.txt"
+    while os.path.exists(path_upload_log) == False:
+        handle_upload_log = open(path_upload_log, 'w+')
+        handle_upload_log.write("\tBegin Log")
+        handle_upload_log.close()
+        print("couldn't find the upload log file so created a new one...")
+    handle_upload_log = open(path_upload_log, 'r')
+    data_upload_log = handle_upload_log.readlines() # copy all previous log entries
+    handle_upload_log.close()
+    handle_upload_log = open(path_upload_log, 'w')
+    handle_upload_log.write(datetime_stamp+"\t "+new_song_name+"\n")
+    handle_upload_log.close()
+    handle_upload_log = open(path_upload_log, 'a')
+    for i in range(len(data_upload_log)):
+        handle_upload_log.write(data_upload_log[i])
+    handle_upload_log.close()
+
+    os.system('clear')
+    print('--your song has been uploaded to OptoBox.')
 
 
 
