@@ -148,7 +148,7 @@ def compose_song():
     if PWM_option == 0:
         if blink_frequency == 0:
             # Set the number of 'LED Active/Resting' cycle repeats
-            handle_song_parameters_txt.write('for (int i = 0; i < '+ str(num_LED_pattern_repeats) + '; i++) {/\n')
+            handle_song_parameters_txt.write('for (int i = 0; i < '+ str(num_LED_pattern_repeats) + '; i++) {\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, HIGH);\n')
             handle_song_parameters_txt.write('        delay(' + str(LED_active_time) + ');\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
@@ -157,7 +157,7 @@ def compose_song():
 
         if blink_frequency != 0:
             handle_song_parameters_txt.write('for (int i = 0; i < '+ str(num_LED_pattern_repeats) + '; i++) {\n')
-            handle_song_parameters_txt.write('    for (j = 0; j < '+ str(num_blinks_per_active_phase) + '; j++) {\n')
+            handle_song_parameters_txt.write('    for (int j = 0; j < '+ str(num_blinks_per_active_phase) + '; j++) {\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, HIGH);\n')
             handle_song_parameters_txt.write('        delay(' + str(blink_on_msec) + ');\n')
             handle_song_parameters_txt.write('        digitalWrite(LEDBlue, LOW);\n')
